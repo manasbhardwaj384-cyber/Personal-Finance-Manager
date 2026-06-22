@@ -472,13 +472,13 @@ def Saving_Goal_Tracker():
         pass
     myfile.close()
     balance=income_balance-expense_balance
-    Saving_Goals=savings_goal-balance
+    remaining=savings_goal-balance
     print("-----------------------------")
     print("Your Saving Goals are:","$",savings_goal)
     print("-----------------------------")
     print("Your Current Balance is :","$",balance)
     print("-----------------------------")
-    print("Remaining:","$",Saving_Goals)
+    print("Remaining:","$",remaining)
     print("-----------------------------")
 def Highest_Income():
     myfile=open("binarytesting.dat","rb")
