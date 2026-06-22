@@ -9,7 +9,7 @@ A menu-driven Personal Finance Manager built using Python and Pickle File Handli
 - Modify Transaction
 - Delete Transaction
 - Search Transaction
-- Current Transaction
+- Current Balance
 - Income Analysis
 - Expense Analysis
 - Monthly Report
