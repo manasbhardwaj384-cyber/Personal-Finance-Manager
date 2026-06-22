@@ -152,7 +152,6 @@ def delete_record():
 def modify_record():
     stud=open("binarytesting.dat","rb")
     temp=open("temp.dat","wb")
-    #roll_no=int(input("Enter roll number of the record you want to modify:"))
     transaction_id=int(input("Enter Transaction ID to be modified:"))
     Flag=False
     try:
