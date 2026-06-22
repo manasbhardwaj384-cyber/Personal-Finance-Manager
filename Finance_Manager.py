@@ -526,7 +526,7 @@ def Tax_Calculator():
         print("Your Current Balance is:","$",balance)
     else:
         print("Too bad you're broke AND in debt of:","$",abs(balance))
-    tax_limit=50000
+    tax_limit=int(input("Enter a tax limit"))
     tax_rate=float(input("Enter Tax Percentage:"))
     if income_balance>tax_limit:
         tax=(income_balance-tax_limit)*tax_rate/100    #Add a feature get if the goverment spares you
