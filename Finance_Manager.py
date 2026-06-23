@@ -1,4 +1,5 @@
 import pickle
+import random
 def write_record():
     myfile=open("binarytesting.dat","wb")
     flag="y"
