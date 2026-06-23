@@ -47,12 +47,16 @@ def write_record():#Writes Fresh data
     print("------DATA HAS BEEN SUCCESSFULLY WRITTEN------")
 def read_record():
     myfile=open("binarytesting.dat","rb")
+    flag=False
     try:
         while True:
             a=pickle.load(myfile)
+            flag=True
             print(a)
     except EOFError:
         pass
+    if not Flag:
+         print("NO RECORD FOUND!!!")
     myfile.close()
 def add_record():#Add new data to already existing data
     myfile=open("binarytesting.dat","ab")
