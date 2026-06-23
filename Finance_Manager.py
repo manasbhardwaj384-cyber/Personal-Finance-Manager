@@ -2,13 +2,13 @@ import pickle
 def write_record():
     myfile=open("binarytesting.dat","wb")
     flag="y"
-    while flag=="y":
+    while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
         transaction_id=int(input("Enter the Transaction ID:"))
         #-----------
         Date=int(input("Enter the date:"))
         if len(str(Date))>8 or len(str(Date))<8:
             print("Date is invalid!!")
-            continue
+            continue #Let's you enter the data again all over from transaction id
         else:
             sub_month=Date//10000
             year=Date%10000
@@ -19,10 +19,10 @@ def write_record():
                 date_dict[2]=29
             if month not in date_dict:
                 print("Wrong Month!!!")
-                continue
+                continue #Let's you enter the data again all over from transaction id
             if days>date_dict[month]or days<1:
                 print("Wrong Date")
-                continue
+                continue #Let's you enter the data again all over from transaction id
             date = f"{days:02d}-{month:02d}-{year}"
             #-----------
         transaction_type=input("Enter the transaction type")
@@ -32,14 +32,14 @@ def write_record():
             transaction_type="Expense"
         else:
             print("Wrong Transaction type!!")
-            continue
+            continue #Let's you enter the data again all over from transaction id
         #-----------
         amount=int(input("Enter an amount:"))
         #-----------
         category=input("Enter the category of Income or expense")
         rec=[transaction_id,date,transaction_type,amount,category]
         pickle.dump(rec,myfile)
-        flag=input("Enter y to continue writing data:")
+        flag=input("Enter y to continue writing data:") 
         if flag=="y":
             pass
     myfile.close()
@@ -56,7 +56,7 @@ def read_record():
 def add_record():
     myfile=open("binarytesting.dat","ab")
     flag="y"
-    while flag=="y":
+    while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
         check=open("binarytesting.dat","rb")
         found=False
         transaction_id=int(input("Enter the Transaction ID:")) #Doesn't allow duplicates IDS to exist
@@ -71,7 +71,7 @@ def add_record():
         check.close()
         if found:
             print("Transaction ID already exists")
-            continue
+            continue #Let's you enter a differnt transaction id again
         #-----------
         Date=int(input("Enter the date:"))
         if len(str(Date))>8 or len(str(Date))<8:
@@ -173,7 +173,7 @@ def modify_record():
                     print("choose:10-->To modify Amount and category")
                     print("choose:11-->To modify Date,Transaction type,Amount and Category")
                     choice=int(input("Enter your choice from (0-11)"))
-                    if 0<=choice<=11:
+                    if 0<=choice<=11: #Works again if user inputs a wrong choice
                         break
                     else:
                         print("Invalid choice")
@@ -404,6 +404,8 @@ def Current_Balance():
     if balance>0:
         print("Congrats you're doing well!!!")
         print("Your Current Balance is:","$",balance)
+    elif balance==0:
+        print("Congrats!!! you're...broke😂🫵","$",balance)
     else:
         print("Too bad you're broke AND in debt of:","$",abs(balance)) #Just in case if your expense>income
 def Income_Analysis():
@@ -522,6 +524,8 @@ def Tax_Calculator():
     if balance>0:
         print("Congrats you're doing well!!!")
         print("Your Current Balance is:","$",balance)
+    elif balance==0:
+        print("Congrats!!! you're...broke😂🫵","$",balance)
     else:
         print("Too bad you're broke AND in debt of:","$",abs(balance))
     if income_balance<100000:
