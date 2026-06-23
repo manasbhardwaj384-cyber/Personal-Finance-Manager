@@ -14,7 +14,7 @@ def write_record():
             year=Date%10000
             days=sub_month//100
             month=sub_month%100
-            date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+            date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
             if (year%400==0) or (year%4==0 and year%100!=0):
                 date_dict[2]=29
             if month not in date_dict:
@@ -55,13 +55,11 @@ def read_record():
     myfile.close()
 def add_record():
     myfile=open("binarytesting.dat","ab")
-    #n=int(input("Enter how many records do you want to enter:"))
     flag="y"
-    #for i in range(n):
     while flag=="y":
         check=open("binarytesting.dat","rb")
         found=False
-        transaction_id=int(input("Enter the Transaction ID:"))
+        transaction_id=int(input("Enter the Transaction ID:")) #Doesn't allow duplicates IDS to exist
         try:
             while True:
                 rec=pickle.load(check)
@@ -84,7 +82,7 @@ def add_record():
             year=Date%10000
             days=sub_month//100
             month=sub_month%100
-            date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+            date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
             if (year%400==0) or (year%4==0 and year%100!=0):
                 date_dict[2]=29
             if month not in date_dict:
@@ -117,7 +115,7 @@ def add_record():
 def clear_record():
     myfile=open("binarytesting.dat","wb")
     myfile.close()
-    print("------YOUR FILE IS NOW EMPTY------")
+    print("------YOUR FILE IS NOW EMPTY------") #If there are too many records just use this
 def delete_record():
     stud=open("binarytesting.dat","rb")
     temp=open("temp.dat","wb")
@@ -191,7 +189,7 @@ def modify_record():
                         days=sub_month//100
                         month=sub_month%100
                         month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
                         if (year%400==0) or (year%4==0 and year%100!=0):
                             date_dict[2]=29
                         if month not in date_dict:
@@ -228,7 +226,7 @@ def modify_record():
                         year=rec[1]%10000
                         days=sub_month//100
                         month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
                         if (year%400==0) or (year%4==0 and year%100!=0):
                             date_dict[2]=29
                         if month not in date_dict:
@@ -259,7 +257,7 @@ def modify_record():
                         year=rec[1]%10000
                         days=sub_month//100
                         month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
                         if (year%400==0) or (year%4==0 and year%100!=0):
                             date_dict[2]=29
                         if month not in date_dict:
@@ -283,7 +281,7 @@ def modify_record():
                         year=rec[1]%10000
                         days=sub_month//100
                         month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
                         if (year%400==0) or (year%4==0 and year%100!=0):
                             date_dict[2]=29
                         if month not in date_dict:
@@ -332,7 +330,7 @@ def modify_record():
                         year=rec[1]%10000
                         days=sub_month//100
                         month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
                         if (year%400==0) or (year%4==0 and year%100!=0):
                             date_dict[2]=29
                         if month not in date_dict:
@@ -407,7 +405,7 @@ def Current_Balance():
         print("Congrats you're doing well!!!")
         print("Your Current Balance is:","$",balance)
     else:
-        print("Too bad you're broke AND in debt of:","$",abs(balance))
+        print("Too bad you're broke AND in debt of:","$",abs(balance)) #Just in case if your expense>income
 def Income_Analysis():
     myfile=open("binarytesting.dat","rb")
     Income_analysis={}
@@ -526,15 +524,25 @@ def Tax_Calculator():
         print("Your Current Balance is:","$",balance)
     else:
         print("Too bad you're broke AND in debt of:","$",abs(balance))
-    tax_limit=int(input("Enter a tax limit"))
-    tax_rate=float(input("Enter Tax Percentage:"))
+    if income_balance<100000:
+        tax_limit=random.randint(5000,25000)
+        tax_rate=random.randint(8,15)   
+    elif income_balance>=100000:
+        tax_limit=random.randint(50000,500000)
+        tax_rate=random.randint(15,25)   
+    print("Your Tax Limit is:","$",tax_limit)
+    print("-------------------------")                
+    print("The Tax Rate comes out to be:",tax_rate,"%",)
+    print("-------------------------")                            
     if income_balance>tax_limit:
-        tax=(income_balance-tax_limit)*tax_rate/100    #Add a feature get if the goverment spares you
-    else:                                                   #Example your balance=-ve but goverment still charges you tax
-        tax=0                                               #Or goverment spares you
-    print("You have to pay:","$",tax,"as tax")       # Use random module for decision
-    final_balance=balance-tax                        # Nvm tax is based on income not balance 
-    print("Your Balance after Tax is:","$",final_balance)           
+        tax=(income_balance-tax_limit)*tax_rate/100    #Tax is calculated on random basis everytime
+    else:                                                   
+        tax=0                                               
+    print("You have to pay:","$",tax,"as tax")
+    print("-----------------------------")      
+    final_balance=balance-tax #Your tax affects your balance                        
+    print("Your Balance after Tax is:","$",final_balance)
+    print("-------------------------------------")           
 while True:
     print("===== PERSONAL FINANCE MANAGER =====")
     print("1 --> Write Transaction in file")
