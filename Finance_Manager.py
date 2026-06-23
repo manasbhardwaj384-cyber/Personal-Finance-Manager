@@ -1,12 +1,12 @@
 import pickle
 import random
-def write_record():
+def write_record():#Writes Fresh data
     myfile=open("binarytesting.dat","wb")
     flag="y"
     while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
         transaction_id=int(input("Enter the Transaction ID:"))
         #-----------
-        Date=int(input("Enter the date:"))
+        Date=int(input("Enter the date:")) #Write data like-XXXXXXXX
         if len(str(Date))>8 or len(str(Date))<8:
             print("Date is invalid!!")
             continue #Let's you enter the data again all over from transaction id
@@ -26,7 +26,7 @@ def write_record():
                 continue #Let's you enter the data again all over from transaction id
             date = f"{days:02d}-{month:02d}-{year}"
             #-----------
-        transaction_type=input("Enter the transaction type")
+        transaction_type=input("Enter the transaction type") #Input income or expense as Type
         if transaction_type=="Income"or transaction_type=="income":
             transaction_type="Income"
         elif transaction_type=="Expense"or transaction_type=="expense":
@@ -54,7 +54,7 @@ def read_record():
     except EOFError:
         pass
     myfile.close()
-def add_record():
+def add_record():#Add new data to already existing data
     myfile=open("binarytesting.dat","ab")
     flag="y"
     while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
@@ -74,7 +74,7 @@ def add_record():
             print("Transaction ID already exists")
             continue #Let's you enter a differnt transaction id again
         #-----------
-        Date=int(input("Enter the date:"))
+        Date=int(input("Enter the date:")) #Input date like XXXXXXXX
         if len(str(Date))>8 or len(str(Date))<8:
             print("Date is invalid!!")
             continue
@@ -94,7 +94,7 @@ def add_record():
                 continue
             date = f"{days:02d}-{month:02d}-{year}"
             #-----------
-        transaction_type=input("Enter the transaction type")
+        transaction_type=input("Enter the transaction type") #Only two types income or expense
         if transaction_type=="Income"or transaction_type=="income":
             transaction_type="Income"
         elif transaction_type=="Expense"or transaction_type=="expense":
