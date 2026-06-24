@@ -4,9 +4,9 @@ def write_record():#Writes Fresh data
     myfile=open("binarytesting.dat","wb")
     flag="y"
     while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
-        transaction_id=int(input("Enter the Transaction ID:"))
+        transaction_id=int(input("Enter the Transaction ID: "))
         #-----------
-        Date=int(input("Enter the date:")) #Write data like-XXXXXXXX
+        Date=int(input("Enter the date: ")) #Write date like-XXXXXXXX
         if len(str(Date))>8 or len(str(Date))<8:
             print("Date is invalid!!")
             continue #Let's you enter the data again all over from transaction id
@@ -26,7 +26,7 @@ def write_record():#Writes Fresh data
                 continue #Let's you enter the data again all over from transaction id
             date = f"{days:02d}-{month:02d}-{year}"
             #-----------
-        transaction_type=input("Enter the transaction type") #Input income or expense as Type
+        transaction_type=input("Enter the transaction type: ") #Input income or expense as Type
         if transaction_type=="Income"or transaction_type=="income":
             transaction_type="Income"
         elif transaction_type=="Expense"or transaction_type=="expense":
@@ -35,12 +35,12 @@ def write_record():#Writes Fresh data
             print("Wrong Transaction type!!")
             continue #Let's you enter the data again all over from transaction id
         #-----------
-        amount=int(input("Enter an amount:"))
+        amount=int(input("Enter an amount: "))
         #-----------
-        category=input("Enter the category of Income or expense")
+        category=input("Enter the category of Income or expense: ")
         rec=[transaction_id,date,transaction_type,amount,category]
         pickle.dump(rec,myfile)
-        flag=input("Enter y to continue writing data:") 
+        flag=input("Enter y to continue writing data: ") 
         if flag=="y":
             pass
     myfile.close()
@@ -64,7 +64,7 @@ def add_record():#Add new data to already existing data
     while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
         check=open("binarytesting.dat","rb")
         found=False
-        transaction_id=int(input("Enter the Transaction ID:")) #Doesn't allow duplicates IDS to exist
+        transaction_id=int(input("Enter the Transaction ID: ")) #Doesn't allow duplicates IDS to exist
         try:
             while True:
                 rec=pickle.load(check)
@@ -78,7 +78,7 @@ def add_record():#Add new data to already existing data
             print("Transaction ID already exists")
             continue #Let's you enter a differnt transaction id again
         #-----------
-        Date=int(input("Enter the date:")) #Input date like XXXXXXXX
+        Date=int(input("Enter the date: ")) #Input date like XXXXXXXX
         if len(str(Date))>8 or len(str(Date))<8:
             print("Date is invalid!!")
             continue
@@ -98,7 +98,7 @@ def add_record():#Add new data to already existing data
                 continue
             date = f"{days:02d}-{month:02d}-{year}"
             #-----------
-        transaction_type=input("Enter the transaction type") #Only two types income or expense
+        transaction_type=input("Enter the transaction type: ") #Only two types income or expense
         if transaction_type=="Income"or transaction_type=="income":
             transaction_type="Income"
         elif transaction_type=="Expense"or transaction_type=="expense":
@@ -107,24 +107,24 @@ def add_record():#Add new data to already existing data
             print("Wrong Transaction type!!")
             continue
         #-----------
-        amount=int(input("Enter an amount:"))
+        amount=int(input("Enter an amount: "))
         #-----------
-        category=input("Enter the category of Income or expense")
+        category=input("Enter the category of Income or expense: ") #Category could be anything-Food,education,Salary,Stocks,etc
         rec=[transaction_id,date,transaction_type,amount,category]
         pickle.dump(rec,myfile)
-        flag=input("Enter y to continue writing data:")
+        flag=input("Enter y to continue writing data: ")
         if flag=="y":
             pass
     myfile.close()
     print("------DATA HAS BEEN SUCCESSFULLY ADDED------")
-def clear_record():
+def clear_record():  #If there are too many records just use this
     myfile=open("binarytesting.dat","wb")
     myfile.close()
-    print("------YOUR FILE IS NOW EMPTY------") #If there are too many records just use this
+    print("------YOUR FILE IS NOW EMPTY------") 
 def delete_record():
     stud=open("binarytesting.dat","rb")
     temp=open("temp.dat","wb")
-    transaction_id=int(input("Enter which record do you want to delete:"))
+    transaction_id=int(input("Enter Transaction ID of the record you want to delete: ")) #Checks transaction ID to delete  record
     Flag=False
     try:
         while True:
@@ -155,7 +155,7 @@ def delete_record():
 def modify_record():
     stud=open("binarytesting.dat","rb")
     temp=open("temp.dat","wb")
-    transaction_id=int(input("Enter Transaction ID to be modified:"))
+    transaction_id=int(input("Enter Transaction ID to be modified: "))
     Flag=False
     try:
         while True:
@@ -164,7 +164,7 @@ def modify_record():
                 pickle.dump(rec,temp)
             else:
                 Flag=True
-                while True:
+                while True:  #Choose from a variety of options to modify 
                     print("Choose:0 -->To modify Transaction ID")
                     print("Choose:1 -->To modify Date")
                     print("Choose:2 -->To modify Transaction Type")
@@ -183,7 +183,7 @@ def modify_record():
                     else:
                         print("Invalid choice")
                 if choice==1:
-                    rec[1]=int(input("Enter new Date:"))
+                    rec[1]=int(input("Enter new Date: "))
                     if len(str(rec[1]))!=8:
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
@@ -207,7 +207,7 @@ def modify_record():
                             continue
                         rec[1] = f"{days:02d}-{month:02d}-{year}"
                 elif choice==2:
-                    rec[2]=input("Enter new Transaction Type:")
+                    rec[2]=input("Enter new Transaction Type: ")
                     if rec[2]=="Income"or rec[2]=="income":
                         rec[2]="Income"
                     elif rec[2]=="Expense"or rec[2]=="expense":
@@ -216,12 +216,12 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         continue
                 elif choice==3:
-                    rec[3]=int(input("Enter new Amount:"))
+                    rec[3]=int(input("Enter new Amount: "))
                 elif choice==4:
-                    rec[4]=input("Enter new Category")
+                    rec[4]=input("Enter new Category: ")
                 elif choice==5:
-                    rec[1]=int(input("Enter new Date:"))
-                    rec[2]=input("enter new Transaction Type:")
+                    rec[1]=int(input("Enter new Date: "))
+                    rec[2]=input("enter new Transaction Type: ")
                     if len(str(rec[1]))!=8:
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
@@ -251,8 +251,8 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         continue
                 elif choice==6:
-                    rec[1]=int(input("Enter new Date:"))
-                    rec[3]=int(input("enter new Amount:"))
+                    rec[1]=int(input("Enter new Date: "))
+                    rec[3]=int(input("enter new Amount: "))
                     if len(str(rec[1]))!=8:
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
@@ -275,8 +275,8 @@ def modify_record():
                             continue
                         rec[1] = f"{days:02d}-{month:02d}-{year}"
                 elif choice==7:
-                    rec[1]=int(input("Enter new Date:"))
-                    rec[4]=input("enter new Category:")
+                    rec[1]=int(input("Enter new Date: "))
+                    rec[4]=input("enter new Category: ")
                     if len(str(rec[1]))!=8:
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
@@ -299,8 +299,8 @@ def modify_record():
                             continue
                         rec[1] = f"{days:02d}-{month:02d}-{year}"
                 elif choice==8:
-                    rec[2]=input("Enter new Transaction type")
-                    rec[3]=int(input("enter new Amount:"))
+                    rec[2]=input("Enter new Transaction type: ")
+                    rec[3]=int(input("enter new Amount: "))
                     if rec[2]=="Income"or rec[2]=="income":
                         rec[2]="Income"
                     elif rec[2]=="Expense"or rec[2]=="expense":
@@ -309,8 +309,8 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         continue
                 elif choice==9:
-                    rec[2]=input("Enter new Transaction type")
-                    rec[4]=input("enter new Category:")
+                    rec[2]=input("Enter new Transaction type: ")
+                    rec[4]=input("enter new Category: ")
                     if rec[2]=="Income"or rec[2]=="income":
                         rec[2]="Income"
                     elif rec[2]=="Expense"or rec[2]=="expense":
@@ -319,13 +319,13 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         continue
                 elif choice==10:
-                    rec[3]=int(input("enter new Amount:"))
-                    rec[4]=input("enter new Category:")
+                    rec[3]=int(input("enter new Amount: "))
+                    rec[4]=input("enter new Category: ")
                 elif choice==11:
-                    rec[1]=int(input("Enter new Date:"))
-                    rec[2]=input("enter new Transaction Type:")
-                    rec[3]=int(input("enter new Amount:"))
-                    rec[4]=input("enter new Category:")
+                    rec[1]=int(input("Enter new Date: "))
+                    rec[2]=input("enter new Transaction Type: ")
+                    rec[3]=int(input("enter new Amount: "))
+                    rec[4]=input("enter new Category: ")
                     if len(str(rec[1]))!=8:
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
@@ -355,7 +355,7 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         continue
                 elif choice==0:
-                    rec[0]=int(input("Enter new Transaction ID:"))
+                    rec[0]=int(input("Enter new Transaction ID: "))
                 pickle.dump(rec,temp)
     except EOFError:
         pass
@@ -377,7 +377,7 @@ def modify_record():
         print("------TRANSACTION ID NOT FOUND------")
 def Search_Record():
     stud=open("binarytesting.dat","rb")
-    transaction_id=int(input("Enter Transaction ID which you want to search:"))
+    transaction_id=int(input("Enter Transaction ID which you want to search: "))
     flag=False
     try:
         while True:
@@ -450,7 +450,7 @@ def Expense_Analysis():
 def Monthly_Report():
     myfile=open("binarytesting.dat","rb")
     flag=False
-    month=int(input("Enter the whose Monthly Report you want to find:"))
+    month=int(input("Enter the whose Monthly Report you want to find: "))
     try:
         while True:
             rec=pickle.load(myfile)
@@ -463,7 +463,7 @@ def Monthly_Report():
     myfile.close()
 def Saving_Goal_Tracker():
     myfile=open("binarytesting.dat","rb")
-    savings_goal=int(input("Enter your Saving Goals:"))
+    savings_goal=int(input("Enter your Saving Goals: "))
     income_balance=0
     expense_balance=0
     try:
@@ -488,29 +488,33 @@ def Saving_Goal_Tracker():
 def Highest_Income():
     myfile=open("binarytesting.dat","rb")
     highest=0
+    highest_category=None
     try:
         while True:
             rec=pickle.load(myfile)
             if rec[2]=="Income"or rec[2]=="income":
                 if rec[3]>highest:
                     highest=rec[3]
+                    highest_category=rec[4]
     except EOFError:
         pass
     myfile.close()
-    print("Your Highest expense is:","$",highest)
+    print("Your Highest expense is",highest_category,":","$",highest)
 def Highest_Expense():
     myfile=open("binarytesting.dat","rb")
     highest=0
+    highest_category=None
     try:
         while True:
             rec=pickle.load(myfile)
             if rec[2]=="Expense"or rec[2]=="expense":
                 if rec[3]>highest:
                     highest=rec[3]
+                    highest_category=rec[4]
     except EOFError:
         pass
     myfile.close()
-    print("Your Highest expense is:","$",highest)
+    print("Your Highest expense is",highest_category,":","$",highest)
 def Tax_Calculator():
     myfile=open("binarytesting.dat","rb")
     income_balance=0
