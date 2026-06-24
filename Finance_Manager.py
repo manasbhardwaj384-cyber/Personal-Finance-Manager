@@ -55,7 +55,7 @@ def read_record():
             print(a)
     except EOFError:
         pass
-    if not Flag:
+    if not flag:
          print("NO RECORD FOUND!!!")
     myfile.close()
 def add_record():#Add new data to already existing data
@@ -192,8 +192,7 @@ def modify_record():
                         sub_month=rec[1]//10000
                         year=rec[1]%10000
                         days=sub_month//100
-                        month=sub_month%100
-                        month=sub_month%100
+                        month=sub_month%100/
                         date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
                         if (year%400==0) or (year%4==0 and year%100!=0):
                             date_dict[2]=29
@@ -499,7 +498,7 @@ def Highest_Income():
     except EOFError:
         pass
     myfile.close()
-    print("Your Highest expense is",highest_category,":","$",highest)
+    print("Your Highest Income is",highest_category,":","$",highest)
 def Highest_Expense():
     myfile=open("binarytesting.dat","rb")
     highest=0
@@ -514,7 +513,7 @@ def Highest_Expense():
     except EOFError:
         pass
     myfile.close()
-    print("Your Highest expense is",highest_category,":","$",highest)
+    print("Your Highest Expense is",highest_category,":","$",highest)
 def Tax_Calculator():
     myfile=open("binarytesting.dat","rb")
     income_balance=0
