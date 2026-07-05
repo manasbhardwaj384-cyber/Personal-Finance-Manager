@@ -1,32 +1,35 @@
 import pickle
 import random
-def write_record():#Writes Fresh data
+def write_record():#Writes Fresh data and erases all previous data
     myfile=open("binarytesting.dat","wb")
     flag="y"
     while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
         transaction_id=int(input("Enter the Transaction ID: "))
         #-----------
-        Date=int(input("Enter the date: ")) #Write date like-XXXXXXXX
-        if len(str(Date))>8 or len(str(Date))<8:
+        Date=int(input("Enter the date: ")) #Input date like XXXXXXXX and it will be split automatically
+        Date_str=str(Date)
+        if len(Date_str)==7:
+            Date_str="0"+Date_str
+        if len(Date_str)>8 or len(Date_str)<8:
             print("Date is invalid!!")
-            continue #Let's you enter the data again all over from transaction id
-        else:
-            sub_month=Date//10000
-            year=Date%10000
-            days=sub_month//100
-            month=sub_month%100
-            date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
-            if (year%400==0) or (year%4==0 and year%100!=0):
-                date_dict[2]=29
-            if month not in date_dict:
-                print("Wrong Month!!!")
-                continue #Let's you enter the data again all over from transaction id
-            if days>date_dict[month]or days<1:
-                print("Wrong Date")
-                continue #Let's you enter the data again all over from transaction id
-            date = f"{days:02d}-{month:02d}-{year}"
+            continue
+        Date=int(Date_str)
+        sub_month=Date//10000
+        year=Date%10000
+        days=sub_month//100
+        month=sub_month%100
+        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
+        if (year%400==0) or (year%4==0 and year%100!=0):
+            date_dict[2]=29
+        if month not in date_dict:
+            print("Wrong Month!!!")
+            continue
+        if days>date_dict[month]or days<1:
+            print("Wrong Date")
+            continue
+        Date = f"{days:02d}-{month:02d}-{year}"
             #-----------
-        transaction_type=input("Enter the transaction type: ") #Input income or expense as Type
+        transaction_type=input("Enter the transaction type: ") #Input income or expense as Transaction Type
         if transaction_type=="Income"or transaction_type=="income":
             transaction_type="Income"
         elif transaction_type=="Expense"or transaction_type=="expense":
@@ -36,9 +39,12 @@ def write_record():#Writes Fresh data
             continue #Let's you enter the data again all over from transaction id
         #-----------
         amount=int(input("Enter an amount: "))
+        if amount<0:
+            print("Invalid Amount!!!")
+            continue
         #-----------
         category=input("Enter the category of Income or expense: ")
-        rec=[transaction_id,date,transaction_type,amount,category]
+        rec=[transaction_id,Date,transaction_type,amount,category]
         pickle.dump(rec,myfile)
         flag=input("Enter y to continue writing data: ") 
         if flag=="y":
@@ -79,26 +85,29 @@ def add_record():#Add new data to already existing data
             continue #Let's you enter a differnt transaction id again
         #-----------
         Date=int(input("Enter the date: ")) #Input date like XXXXXXXX
-        if len(str(Date))>8 or len(str(Date))<8:
+        Date_str=str(Date)
+        if len(Date_str)==7:
+            Date_str="0"+Date_str
+        if len(Date_str)>8 or len(Date_str)<8:
             print("Date is invalid!!")
             continue
-        else:
-            sub_month=Date//10000
-            year=Date%10000
-            days=sub_month//100
-            month=sub_month%100
-            date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
-            if (year%400==0) or (year%4==0 and year%100!=0):
-                date_dict[2]=29
-            if month not in date_dict:
-                print("Wrong Month!!!")
-                continue
-            if days>date_dict[month]or days<1:
-                print("Wrong Date")
-                continue
-            date = f"{days:02d}-{month:02d}-{year}"
+        Date=int(Date_str)
+        sub_month=Date//10000
+        year=Date%10000
+        days=sub_month//100
+        month=sub_month%100
+        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
+        if (year%400==0) or (year%4==0 and year%100!=0):
+            date_dict[2]=29
+        if month not in date_dict:
+            print("Wrong Month!!!")
+            continue
+        if days>date_dict[month]or days<1:
+            print("Wrong Date")
+            continue
+        Date = f"{days:02d}-{month:02d}-{year}"
             #-----------
-        transaction_type=input("Enter the transaction type: ") #Only two types income or expense
+        transaction_type=input("Enter the transaction type: ") #Only two types of transaction type:-income or expense
         if transaction_type=="Income"or transaction_type=="income":
             transaction_type="Income"
         elif transaction_type=="Expense"or transaction_type=="expense":
@@ -108,9 +117,12 @@ def add_record():#Add new data to already existing data
             continue
         #-----------
         amount=int(input("Enter an amount: "))
+        if amount<0:
+            print("Invalid Amount!!!")
+            continue
         #-----------
         category=input("Enter the category of Income or expense: ") #Category could be anything-Food,education,Salary,Stocks,etc
-        rec=[transaction_id,date,transaction_type,amount,category]
+        rec=[transaction_id,Date,transaction_type,amount,category]
         pickle.dump(rec,myfile)
         flag=input("Enter y to continue writing data: ")
         if flag=="y":
@@ -177,34 +189,38 @@ def modify_record():
                     print("Choose:9 -->To modify Transaction type and category")
                     print("choose:10-->To modify Amount and category")
                     print("choose:11-->To modify Date,Transaction type,Amount and Category")
-                    choice=int(input("Enter your choice from (0-11)"))
+                    choice=int(input("Enter your choice from (0-11): "))
                     if 0<=choice<=11: #Works again if user inputs a wrong choice
                         break
                     else:
                         print("Invalid choice")
                 if choice==1:
                     rec[1]=int(input("Enter new Date: "))
-                    if len(str(rec[1]))!=8:
+                    Date_str=str(rec[1])
+                    if len(Date_str)==7:
+                        Date_str="0"+Date_str
+                    if len(Date_str)!=8:   
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
                         continue
-                    else:
-                        sub_month=rec[1]//10000
-                        year=rec[1]%10000
-                        days=sub_month//100
-                        month=sub_month%100/
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
-                        if (year%400==0) or (year%4==0 and year%100!=0):
-                            date_dict[2]=29
-                        if month not in date_dict:
-                            print("Wrong Month!!!")
-                            pickle.dump(rec,temp)
-                            continue
-                        if days>date_dict[month]or days<1:
-                            print("Wrong Date")
-                            pickle.dump(rec,temp)
-                            continue
-                        rec[1] = f"{days:02d}-{month:02d}-{year}"
+                    Date=int(Date_str)
+                    sub_month=Date//10000
+                    year=Date%10000
+                    days=sub_month//100
+                    month=sub_month%100
+                    date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                    if (year%400==0) or (year%4==0 and year%100!=0):
+                        date_dict[2]=29
+                    if month not in date_dict:
+                        print("Wrong Month!!!")
+                        pickle.dump(rec,temp)
+                        continue
+                    if days>date_dict[month]or days<1:
+                        print("Wrong Date")
+                        pickle.dump(rec,temp)
+                        continue
+                    rec[1] = f"{days:02d}-{month:02d}-{year}"
+                    pickle.dump(rec,temp)
                 elif choice==2:
                     rec[2]=input("Enter new Transaction Type: ")
                     if rec[2]=="Income"or rec[2]=="income":
@@ -214,34 +230,43 @@ def modify_record():
                     else:
                         print("Wrong Transaction type!!")
                         continue
+                    pickle.dump(rec,temp)
                 elif choice==3:
                     rec[3]=int(input("Enter new Amount: "))
+                    if rec[3]<0:
+                        print("Invalid Amount!!!")
+                        continue
+                    pickle.dump(rec,temp)
                 elif choice==4:
                     rec[4]=input("Enter new Category: ")
+                    pickle.dump(rec,temp)
                 elif choice==5:
                     rec[1]=int(input("Enter new Date: "))
                     rec[2]=input("enter new Transaction Type: ")
-                    if len(str(rec[1]))!=8:
+                    Date_str=str(rec[1])
+                    if len(Date_str)==7:
+                        Date_str="0"+Date_str
+                    if len(Date_str)!=8:   
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
                         continue
-                    else:
-                        sub_month=rec[1]//10000
-                        year=rec[1]%10000
-                        days=sub_month//100
-                        month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
-                        if (year%400==0) or (year%4==0 and year%100!=0):
-                            date_dict[2]=29
-                        if month not in date_dict:
-                            print("Wrong Month!!!")
-                            pickle.dump(rec,temp)
-                            continue
-                        if days>date_dict[month]or days<1:
-                            print("Wrong Date")
-                            pickle.dump(rec,temp)
-                            continue
-                        rec[1] = f"{days:02d}-{month:02d}-{year}"
+                    Date=int(Date_str)
+                    sub_month=Date//10000
+                    year=Date%10000
+                    days=sub_month//100
+                    month=sub_month%100
+                    date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                    if (year%400==0) or (year%4==0 and year%100!=0):
+                        date_dict[2]=29
+                    if month not in date_dict:
+                        print("Wrong Month!!!")
+                        pickle.dump(rec,temp)
+                        continue
+                    if days>date_dict[month]or days<1:
+                        print("Wrong Date")
+                        pickle.dump(rec,temp)
+                        continue
+                    rec[1] = f"{days:02d}-{month:02d}-{year}"
                     if rec[2]=="Income"or rec[2]=="income":
                         rec[2]="Income"
                     elif rec[2]=="Expense"or rec[2]=="expense":
@@ -249,57 +274,68 @@ def modify_record():
                     else:
                         print("Wrong Transaction type!!")
                         continue
+                    pickle.dump(rec,temp)
                 elif choice==6:
                     rec[1]=int(input("Enter new Date: "))
                     rec[3]=int(input("enter new Amount: "))
-                    if len(str(rec[1]))!=8:
+                    if rec[3]<0:
+                        print("Invalid Amount!!!")
+                        continue
+                    Date_str=str(rec[1])
+                    if len(Date_str)==7:
+                        Date_str="0"+Date_str 
+                    if len(Date_str)!=8:   
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
                         continue
-                    else:
-                        sub_month=rec[1]//10000
-                        year=rec[1]%10000
-                        days=sub_month//100
-                        month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
-                        if (year%400==0) or (year%4==0 and year%100!=0):
-                            date_dict[2]=29
-                        if month not in date_dict:
-                            print("Wrong Month!!!")
-                            pickle.dump(rec,temp)
-                            continue
-                        if days>date_dict[month]or days<1:
-                            print("Wrong Date")
-                            pickle.dump(rec,temp)
-                            continue
-                        rec[1] = f"{days:02d}-{month:02d}-{year}"
+                    Date=int(Date_str)
+                    sub_month=Date//10000
+                    year=Date%10000
+                    days=sub_month//100
+                    month=sub_month%100
+                    date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                    if (year%400==0) or (year%4==0 and year%100!=0):
+                        date_dict[2]=29
+                    if month not in date_dict:
+                        print("Wrong Month!!!")
+                        pickle.dump(rec,temp)
+                        continue
+                    if days>date_dict[month]or days<1:
+                        print("Wrong Date")
+                        pickle.dump(rec,temp)
+                        continue
+                    rec[1] = f"{days:02d}-{month:02d}-{year}"
+                    pickle.dump(rec,temp)
                 elif choice==7:
                     rec[1]=int(input("Enter new Date: "))
                     rec[4]=input("enter new Category: ")
-                    if len(str(rec[1]))!=8:
+                    Date_str=str(rec[1])
+                    if len(Date_str)==7:
+                        Date_str="0"+Date_str 
+                    if len(Date_str)!=8:   
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
                         continue
-                    else:
-                        sub_month=rec[1]//10000
-                        year=rec[1]%10000
-                        days=sub_month//100
-                        month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
-                        if (year%400==0) or (year%4==0 and year%100!=0):
-                            date_dict[2]=29
-                        if month not in date_dict:
-                            print("Wrong Month!!!")
-                            pickle.dump(rec,temp)
-                            continue
-                        if days>date_dict[month]or days<1:
-                            print("Wrong Date")
-                            pickle.dump(rec,temp)
-                            continue
-                        rec[1] = f"{days:02d}-{month:02d}-{year}"
+                    Date=int(Date_str)
+                    sub_month=Date//10000
+                    year=Date%10000
+                    days=sub_month//100
+                    month=sub_month%100
+                    date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                    if (year%400==0) or (year%4==0 and year%100!=0):
+                        date_dict[2]=29
+                    if month not in date_dict:
+                        print("Wrong Month!!!")
+                        pickle.dump(rec,temp)
+                        continue
+                    if days>date_dict[month]or days<1:
+                        print("Wrong Date")
+                        pickle.dump(rec,temp)
+                        continue
+                    rec[1] = f"{days:02d}-{month:02d}-{year}"
+                    pickle.dump(rec,temp)
                 elif choice==8:
                     rec[2]=input("Enter new Transaction type: ")
-                    rec[3]=int(input("enter new Amount: "))
                     if rec[2]=="Income"or rec[2]=="income":
                         rec[2]="Income"
                     elif rec[2]=="Expense"or rec[2]=="expense":
@@ -307,6 +343,11 @@ def modify_record():
                     else:
                         print("Wrong Transaction type!!")
                         continue
+                    rec[3]=int(input("enter new Amount: "))
+                    if rec[3]<0:
+                        print("Invalid Amount!!!")
+                        continue
+                    pickle.dump(rec,temp)
                 elif choice==9:
                     rec[2]=input("Enter new Transaction type: ")
                     rec[4]=input("enter new Category: ")
@@ -317,35 +358,46 @@ def modify_record():
                     else:
                         print("Wrong Transaction type!!")
                         continue
+                    pickle.dump(rec,temp)
                 elif choice==10:
                     rec[3]=int(input("enter new Amount: "))
+                    if rec[3]<0:
+                        print("Invalid Amount!!!")
+                        continue
                     rec[4]=input("enter new Category: ")
+                    pickle.dump(rec,temp)
                 elif choice==11:
                     rec[1]=int(input("Enter new Date: "))
                     rec[2]=input("enter new Transaction Type: ")
                     rec[3]=int(input("enter new Amount: "))
+                    if rec[3]<0:
+                        print("Invalid Amount!!!")
+                        continue
                     rec[4]=input("enter new Category: ")
-                    if len(str(rec[1]))!=8:
+                    Date_str=str(rec[1])
+                    if len(Date_str)==7:
+                        Date_str="0"+Date_str
+                    if len(Date_str)!=8:  
                         print("Invalid Date!!")
                         pickle.dump(rec,temp)
                         continue
-                    else:
-                        sub_month=rec[1]//10000
-                        year=rec[1]%10000
-                        days=sub_month//100
-                        month=sub_month%100
-                        date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31} #Accounts for the most accurate dates
-                        if (year%400==0) or (year%4==0 and year%100!=0):
-                            date_dict[2]=29
-                        if month not in date_dict:
-                            print("Wrong Month!!!")
-                            pickle.dump(rec,temp)
-                            continue
-                        if days>date_dict[month]or days<1:
-                            print("Wrong Date")
-                            pickle.dump(rec,temp)
-                            continue
-                        rec[1] = f"{days:02d}-{month:02d}-{year}"
+                    Date=int(Date_str)
+                    sub_month=Date//10000
+                    year=Date%10000
+                    days=sub_month//100
+                    month=sub_month%100
+                    date_dict={1:31,2:28,3:31,4:30,5:31,6:30,7:31,8:31,9:30,10:31,11:30,12:31}
+                    if (year%400==0) or (year%4==0 and year%100!=0):
+                        date_dict[2]=29
+                    if month not in date_dict:
+                        print("Wrong Month!!!")
+                        pickle.dump(rec,temp)
+                        continue
+                    if days>date_dict[month]or days<1:
+                        print("Wrong Date")
+                        pickle.dump(rec,temp)
+                        continue
+                    rec[1] = f"{days:02d}-{month:02d}-{year}"
                     if rec[2]=="Income"or rec[2]=="income":
                         rec[2]="Income"
                     elif rec[2]=="Expense"or rec[2]=="expense":
@@ -353,9 +405,10 @@ def modify_record():
                     else:
                         print("Wrong Transaction type!!")
                         continue
+                    pickle.dump(rec,temp)
                 elif choice==0:
                     rec[0]=int(input("Enter new Transaction ID: "))
-                pickle.dump(rec,temp)
+                    pickle.dump(rec,temp)
     except EOFError:
         pass
     stud.close()
@@ -405,14 +458,21 @@ def Current_Balance():
         pass
     myfile.close()
     balance=income_balance-expense_balance
+    print("You earned:", income_balance)
+    print("--------------------------")
+    print("You spent:", expense_balance)
+    print("--------------------------")
     if balance>0:
         print("Congrats you're doing well!!!")
-        print("Your Current Balance is:","$",balance)
+        print("Your Current Balance is:", "₹",balance)
+        print("--------------------------")
     elif balance==0:
-        print("Congrats!!! you're...broke😂🫵","$",balance)
+        print("Congrats!!! you're...broke😂🫵","₹",balance)
+        print("--------------------------")
     else:
-        print("Too bad you're broke AND in debt of:","$",abs(balance)) #Just in case if your expense>income
-def Income_Analysis():
+        print("Too bad you're broke AND in debt of:","₹",abs(balance))#Just in case if your expense>income
+        print("--------------------------")
+def Income_Analysis():#Tells you how much you earned
     myfile=open("binarytesting.dat","rb")
     Income_analysis={}
     try :
@@ -427,9 +487,21 @@ def Income_Analysis():
         pass
     myfile.close()
     for i in Income_analysis:
-        print(i,":","$",Income_analysis[i])
+        print(i,":","₹",Income_analysis[i])
         print("------------")
-def Expense_Analysis():
+    myfile=open("binarytesting.dat","rb")
+    income_balance=0
+    try:
+        while True:
+            rec=pickle.load(myfile)
+            if rec[2]=="Income":
+                income_balance+=rec[3]
+    except EOFError:
+        pass
+    print("Your Total Income comes out to be:","₹", income_balance)
+    print("--------------------------------------------")
+    myfile.close()
+def Expense_Analysis():#Tells you how much you spent
     myfile=open("binarytesting.dat","rb")
     expense_analysis={}
     try :
@@ -444,9 +516,21 @@ def Expense_Analysis():
         pass
     myfile.close()
     for i in expense_analysis:
-        print(i,":","$",expense_analysis[i])
+        print(i,":","₹",expense_analysis[i])
         print("------------")
-def Monthly_Report():
+    myfile=open("binarytesting.dat","rb")
+    expense_balance=0
+    try:
+        while True:
+            rec=pickle.load(myfile)
+            if rec[2]=="Expense":
+                expense_balance+=rec[3]
+    except EOFError:
+        pass
+    print("Your Total Expense comes out to be:","₹", expense_balance)
+    print("--------------------------------------------")
+    myfile.close()
+def Monthly_Report():#Lets you see all the transactions made in a specific month
     myfile=open("binarytesting.dat","rb")
     flag=False
     month=int(input("Enter the whose Monthly Report you want to find: "))
@@ -460,7 +544,7 @@ def Monthly_Report():
         if not flag:
             print("Report Not Found!!!")    
     myfile.close()
-def Saving_Goal_Tracker():
+def Saving_Goal_Tracker():# Asks for your financial goals and tell you how far you are from it
     myfile=open("binarytesting.dat","rb")
     savings_goal=int(input("Enter your Saving Goals: "))
     income_balance=0
@@ -477,13 +561,18 @@ def Saving_Goal_Tracker():
     myfile.close()
     balance=income_balance-expense_balance
     remaining=savings_goal-balance
-    print("-----------------------------")
-    print("Your Saving Goals are:","$",savings_goal)
-    print("-----------------------------")
-    print("Your Current Balance is :","$",balance)
-    print("-----------------------------")
-    print("Remaining:","$",remaining)
-    print("-----------------------------")
+    if remaining<0:
+        print("Congrats!! You've already surpassed your goals by:","₹",abs(remaining))
+    elif remaining==0:
+        print("Congrats!! You've already reached your goals")
+    else:
+        print("-----------------------------")
+        print("Your Saving Goals are:","₹",savings_goal)
+        print("-----------------------------")
+        print("Your Current Balance is :","₹",balance)
+        print("-----------------------------")
+        print("Remaining:","₹",remaining)
+        print("-----------------------------")
 def Highest_Income():
     myfile=open("binarytesting.dat","rb")
     highest=0
@@ -498,7 +587,7 @@ def Highest_Income():
     except EOFError:
         pass
     myfile.close()
-    print("Your Highest Income is",highest_category,":","$",highest)
+    print("Your Highest expense is",highest_category,":","₹",highest)
 def Highest_Expense():
     myfile=open("binarytesting.dat","rb")
     highest=0
@@ -513,7 +602,7 @@ def Highest_Expense():
     except EOFError:
         pass
     myfile.close()
-    print("Your Highest Expense is",highest_category,":","$",highest)
+    print("Your Highest expense is",highest_category,":","₹",highest)
 def Tax_Calculator():
     myfile=open("binarytesting.dat","rb")
     income_balance=0
@@ -531,29 +620,36 @@ def Tax_Calculator():
     balance=income_balance-expense_balance
     if balance>0:
         print("Congrats you're doing well!!!")
-        print("Your Current Balance is:","$",balance)
+        print("Your Current Balance is:","₹",balance)
     elif balance==0:
-        print("Congrats!!! you're...broke😂🫵","$",balance)
+        print("Congrats!!! you're...broke😂🫵","₹",balance)
     else:
-        print("Too bad you're broke AND in debt of:","$",abs(balance))
-    if income_balance<100000:
-        tax_limit=random.randint(5000,25000)
-        tax_rate=random.randint(8,15)   
-    elif income_balance>=100000:
-        tax_limit=random.randint(50000,500000)
-        tax_rate=random.randint(15,25)   
-    print("Your Tax Limit is:","$",tax_limit)
+        print("Too bad you're broke AND in debt of:","₹",abs(balance))
+    if income_balance<=0:
+        tax_limit=0
+        tax_rate=0
+        tax=0
+    elif income_balance>=50000 and income_balance<100000:
+        tax_limit=25000
+        tax_rate=8
+    elif income_balance>=100000 and income_balance<=500000:
+        tax_limit=100000
+        tax_rate=15
+    elif income_balance>500000:
+        tax_limit=125000
+        tax_rate=25  
+    print("Your Tax Limit is:","₹",tax_limit)
     print("-------------------------")                
     print("The Tax Rate comes out to be:",tax_rate,"%",)
     print("-------------------------")                            
     if income_balance>tax_limit:
         tax=(income_balance-tax_limit)*tax_rate/100    #Tax is calculated on random basis everytime
     else:                                                   
-        tax=0                                               
-    print("You have to pay:","$",tax,"as tax")
+        tax=0                                          
+    print("You have to pay:","₹",tax,"as tax")
     print("-----------------------------")      
     final_balance=balance-tax #Your tax affects your balance                        
-    print("Your Balance after Tax is:","$",final_balance)
+    print("Your Balance after Tax is:","₹",final_balance)
     print("-------------------------------------")           
 while True:
     print("===== PERSONAL FINANCE MANAGER =====")
@@ -573,7 +669,7 @@ while True:
     print("14--> Highest Expense")
     print("15--> Tax Calculator")
     print("0 --> Exit")
-    choice=int(input("Enter your choice from (0-15)"))
+    choice=int(input("Enter your choice from (0-15): "))
     if choice==1:
         write_record()
     elif choice==2:
@@ -609,7 +705,6 @@ while True:
         break
     else:
         print("Invalid choice!!!")
-
 
 
 
