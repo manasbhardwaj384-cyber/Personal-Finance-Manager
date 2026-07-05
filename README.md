@@ -28,7 +28,6 @@ A menu-driven Personal Finance Manager built using Python,Random module and Pick
 - Python
 - Pickle Module
 - File Handling
-- Random Module
 
 ## Author
 Manas Bhardwaj
