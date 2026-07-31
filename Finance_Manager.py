@@ -7,7 +7,7 @@ def write_record():#Writes Fresh data and erases all previous data
         transaction_id=int(input("Enter the Transaction ID: "))
         #-----------
         Date=int(input("Enter the date: ")) #Input date like XXXXXXXX and it will be split automatically
-        Date_str=str(Date)
+        Date_str=str(Date) #Strictly takes 8 digit dates only 
         if len(Date_str)==7:
             Date_str="0"+Date_str
         if len(Date_str)>8 or len(Date_str)<8:
@@ -625,6 +625,9 @@ def Tax_Calculator():
         print("Congrats!!! you're...broke😂🫵","₹",balance)
     else:
         print("Too bad you're broke AND in debt of:","₹",abs(balance))
+    tax_limit=0
+    tax_rate=0
+    tax=0
     if income_balance<=0:
         tax_limit=0
         tax_rate=0
