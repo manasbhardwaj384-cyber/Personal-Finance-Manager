@@ -5,6 +5,9 @@ def write_record():#Writes Fresh data and erases all previous data
     flag="y"
     while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
         transaction_id=int(input("Enter the Transaction ID: "))
+        if transaction_id<0:
+            print("Invalid Transaction ID!!!")
+            continue
         #-----------
         Date=int(input("Enter the date: ")) #Input date like XXXXXXXX and it will be split automatically
         Date_str=str(Date) #Strictly takes 8 digit dates only 
@@ -71,6 +74,9 @@ def add_record():#Add new data to already existing data
         check=open("binarytesting.dat","rb")
         found=False
         transaction_id=int(input("Enter the Transaction ID: ")) #Doesn't allow duplicates IDS to exist
+        if transaction_id<0:
+            print("Invalid Transaction ID!!!")
+            continue
         try:
             while True:
                 rec=pickle.load(check)
