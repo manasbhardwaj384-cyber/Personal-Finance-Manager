@@ -1,5 +1,4 @@
 import pickle
-import random
 def write_record():#Writes Fresh data and erases all previous data
     myfile=open("binarytesting.dat","wb")
     flag="y"
