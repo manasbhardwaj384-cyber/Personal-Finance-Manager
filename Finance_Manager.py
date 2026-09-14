@@ -27,7 +27,10 @@ def write_record():#Writes Fresh data and erases all previous data
             print("Wrong Month!!!")
             continue
         if days>date_dict[month]or days<1:
-            print("Wrong Date")
+            print("Wrong Date!!!")
+            continue
+        if year<2026 and year>2027:
+            print("Invalid Year!!!")
             continue
         Date = f"{days:02d}-{month:02d}-{year}"
         #-----------
@@ -110,6 +113,9 @@ def add_record():#Add new data to already existing data
             continue
         if days>date_dict[month]or days<1:
             print("Wrong Date")
+            continue
+        if year<2026 and year>2027:
+            print("Invalid Year!!!")
             continue
         Date = f"{days:02d}-{month:02d}-{year}"
         #-----------
@@ -225,6 +231,10 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
+                    if year<2026 and year>2027:
+                        print("Invalid Year!!!")
+                        pickle.dump(rec,temp)
+                        continue
                     rec[1]=f"{days:02d}-{month:02d}-{year}"
                     pickle.dump(rec,temp)
                 elif choice==2:
@@ -277,8 +287,10 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    rec[1]=f"{days:02d}-{month:02d}-{year}"
-                    pickle.dump(rec,temp)
+                    if year<2026 and year>2027:
+                        print("Invalid Year!!!")
+                        pickle.dump(rec,temp)
+                        continue
                     if new_transaction_type=="Income"or new_transaction_type=="income":
                         new_transaction_type="Income"
                     elif new_transaction_type=="Expense"or new_transaction_type=="expense":
@@ -287,9 +299,10 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         pickle.dump(rec,temp)
                         continue
+                    rec[1]=f"{days:02d}-{month:02d}-{year}"
                     rec[2]=new_transaction_type
                     pickle.dump(rec,temp)
-                elif choice==6: 
+                elif choice==6:
                     new_date=int(input("Enter new Date: "))
                     Date_str=str(new_date)
                     if len(Date_str)==7:
@@ -314,13 +327,18 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    rec[1]=f"{days:02d}-{month:02d}-{year}"
-                    pickle.dump(rec,temp)
+                    if year<2026 and year>2027:
+                        print("Invalid Year!!!")
+                        pickle.dump(rec,temp)
+                        continue
                     new_amount=int(input("Enter new Amount: "))
                     if new_amount<0:
                         print("Invalid Amount!!!")
                         pickle.dump(rec,temp)
                         continue
+                    rec[1]=f"{days:02d}-{month:02d}-{year}"
+                    rec[3]=new_amount
+                    pickle.dump(rec,temp)
                 elif choice==7:
                     new_date=int(input("Enter new Date: "))
                     Date_str=str(new_date)
@@ -346,9 +364,12 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    rec[1]=f"{days:02d}-{month:02d}-{year}"
-                    pickle.dump(rec,temp)
+                    if year<2026 and year>2027:
+                        print("Invalid Year!!!")
+                        pickle.dump(rec,temp)
+                        continue
                     new_category=input("Enter new Category: ")
+                    rec[1]=f"{days:02d}-{month:02d}-{year}"
                     rec[4]=new_category
                     pickle.dump(rec,temp)
                 elif choice==8:
@@ -361,13 +382,12 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         pickle.dump(rec,temp)
                         continue
-                    rec[2]=new_transaction_type
-                    pickle.dump(rec,temp)
                     new_amount=int(input("Enter new Amount: "))
                     if new_amount<0:
                         print("Invalid Amount!!!")
                         pickle.dump(rec,temp)
                         continue
+                    rec[2]=new_transaction_type
                     rec[3]=new_amount
                     pickle.dump(rec,temp)
                 elif choice==9:
@@ -380,9 +400,8 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         pickle.dump(rec,temp)
                         continue
-                    rec[2]=new_transaction_type
-                    pickle.dump(rec,temp)
                     new_category=input("Enter new Category: ")
+                    rec[2]=new_transaction_type
                     rec[4]=new_category
                     pickle.dump(rec,temp)
                 elif choice==10:
@@ -391,9 +410,8 @@ def modify_record():
                         print("Invalid Amount!!!")
                         pickle.dump(rec,temp)
                         continue
-                    rec[3]=new_amount
-                    pickle.dump(rec,temp)
                     new_category=input("Enter new Category: ")
+                    rec[3]=new_amount
                     rec[4]=new_category
                     pickle.dump(rec,temp)
                 elif choice==11:
@@ -421,8 +439,10 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    rec[1]=f"{days:02d}-{month:02d}-{year}"
-                    pickle.dump(rec,temp)
+                    if year<2026 and year>2027:
+                        print("Invalid Year!!!")
+                        pickle.dump(rec,temp)
+                        continue
                     new_transaction_type=input("Enter new Transaction Type: ")
                     if new_transaction_type=="Income"or new_transaction_type=="income":
                         new_transaction_type="Income"
@@ -432,16 +452,15 @@ def modify_record():
                         print("Wrong Transaction type!!")
                         pickle.dump(rec,temp)
                         continue
-                    rec[2]=new_transaction_type
-                    pickle.dump(rec,temp)
                     new_amount=int(input("Enter new Amount: "))
                     if new_amount<0:
                         print("Invalid Amount!!!")
                         pickle.dump(rec,temp)
                         continue
-                    rec[3]=new_amount
-                    pickle.dump(rec,temp)
                     new_category=input("Enter new Category: ")
+                    rec[1]=f"{days:02d}-{month:02d}-{year}"
+                    rec[2]=new_transaction_type
+                    rec[3]=new_amount
                     rec[4]=new_category
                     pickle.dump(rec,temp)
                 elif choice==0:
@@ -476,14 +495,14 @@ def modify_record():
     Temp=open("temp.dat","rb")
     try:
         while True:
-            Rec=pickle.load(Temp)
-            pickle.dump(Rec,Stud)
+            rec=pickle.load(Temp)
+            pickle.dump(rec,Stud)
     except EOFError:
         pass
     Stud.close()
     Temp.close()
     if Flag:
-        print("------DATA HAS BEEN MODIFIED------")
+        print("------DATA HAS BEEN SUCCESSFULLY MODIFIED------")
     else:
         print("------TRANSACTION ID NOT FOUND------")
 def Search_Record(): # Searches via Transaction ID
@@ -675,11 +694,13 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
     myfile=open("binarytesting.dat","rb") 
     income_balance=0 
     expense_balance=0
+    c=0
     try:
         while True:
             rec=pickle.load(myfile)
             if rec[2]=="Income"or rec[2]=="income":
                 income_balance+=rec[3]
+                c+=1
             elif rec[2]=="Expense"or rec[2]=="expense":
                 expense_balance+=rec[3]
     except EOFError:
@@ -714,7 +735,7 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
     print("The Tax Rate comes out to be:",tax_rate,"%",)
     print("-------------------------")
     if income_balance>tax_limit:
-        tax=(income_balance-tax_limit)*tax_rate/100    #Tax is calculated on random basis everytime
+        tax=(income_balance-tax_limit)*tax_rate/100    
     else:
         tax=0
     print("You have to pay:","₹",tax,"as tax")
