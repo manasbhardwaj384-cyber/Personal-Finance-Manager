@@ -1,5 +1,5 @@
 # Personal Finance Manager
-A menu-driven Personal Finance Manager built using Python,Random module and Pickle File Handling
+A menu-driven Personal Finance Manager built using Python and Pickle File Handling
 
 ## Features
 - Write Transactions
