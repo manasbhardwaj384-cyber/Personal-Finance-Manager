@@ -59,16 +59,21 @@ def write_record():#Writes Fresh data and erases all previous data
 def read_record():
     myfile=open("binarytesting.dat","rb")
     flag=False
+    record=[]
     try:
         while True:
             a=pickle.load(myfile)
+            record.append(a)
             flag=True
-            print(a)
     except EOFError:
         pass
-    if not flag:
-        print("NO RECORD FOUND!!!")
     myfile.close()
+    record.sort(key=lambda x:x[0])
+    if flag:
+        for i in record:
+            print(i)
+    else:
+        print("NO RECORD FOUND!!!")
 def add_record():#Add new data to already existing data
     myfile=open("binarytesting.dat","ab")
     flag="y"
@@ -690,14 +695,16 @@ def Highest_Expense(): #Displays your highest expense
         print("No record found")
     else:
         print("Your Highest expense is",highest_category,":","₹",highest)
-def Tax_Calculator(): # Calculates how much tax you have to pay according to your income 
-    myfile=open("binarytesting.dat","rb") 
+def Tax_Calculator(): # Calculates how much tax you have to pay according to your income
+    myfile=open("binarytesting.dat","rb")
     income_balance=0 
     expense_balance=0
     c=0
+    record=[]
     try:
         while True:
             rec=pickle.load(myfile)
+            record.append(rec)
             if rec[2]=="Income"or rec[2]=="income":
                 income_balance+=rec[3]
                 c+=1
@@ -714,35 +721,77 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
         print("Congrats!!! you're...broke😂🫵","₹",balance)
     else:
         print("Too bad you're broke AND in debt of:","₹",abs(balance))
-    tax_limit=0
-    tax_rate=0
+    #------------------------------------------
+    # TAX CALCULATION
+    #------------------------------------------
     tax=0
-    if income_balance<=0:
-        tax_limit=0
-        tax_rate=0
+    if income_balance<=400000:
         tax=0
-    elif income_balance>=50000 and income_balance<100000:
-        tax_limit=25000
-        tax_rate=8
-    elif income_balance>=100000 and income_balance<=500000:
-        tax_limit=100000
-        tax_rate=15
-    elif income_balance>500000:
-        tax_limit=125000
-        tax_rate=25
-    print("Your Tax Limit is:","₹",tax_limit)
-    print("-------------------------")
-    print("The Tax Rate comes out to be:",tax_rate,"%",)
-    print("-------------------------")
-    if income_balance>tax_limit:
-        tax=(income_balance-tax_limit)*tax_rate/100    
+    elif income_balance<=800000:
+        tax=(income_balance-400000)*0.05
+    elif income_balance<=1200000:
+        tax=20000+(income_balance-800000)*0.10
+    elif income_balance<=1600000:
+        tax=60000+(income_balance-1200000)*0.15
+    elif income_balance<=2000000:
+        tax=120000+(income_balance-1600000)*0.20
+    elif income_balance<=2400000:
+        tax=200000+(income_balance-2000000)*0.25
     else:
+        tax=300000+(income_balance-2400000)*0.30
+    # Section 87A rebate
+    if income_balance<=1200000:
         tax=0
-    print("You have to pay:","₹",tax,"as tax")
-    print("-----------------------------")
+    print("-------------------------------------")
+    print("Your Total Income is:","₹",income_balance)
+    print("-------------------------------------")
+    print("Your Calculated Tax is:","₹",tax)
+    print("-------------------------------------")
     final_balance=balance-tax #Your tax affects your balance
     print("Your Balance after Tax is:","₹",final_balance)
-    print("-------------------------------------")
+    print("--------------------------------------")
+    choice=input("Do you want to pay tax: ")
+    if choice.title()=="Yes":
+        # Check whether tax has already been paid
+        already_paid=False
+        check=open("binarytesting.dat","rb")
+        try:
+            while True:
+                rec=pickle.load(check)
+                if rec[2]=="Expense" and rec[4].lower()=="tax":
+                    already_paid=True
+        except EOFError:
+            pass
+        check.close()
+        if already_paid:
+            print("Tax has already been paid.")
+            print("You cannot pay the same tax again.")
+        elif tax==0:
+            print("Your calculated tax is ₹0.")
+            print("No tax payment is required.")
+        else:
+            # Find the highest Transaction ID
+            highest_id=0
+            check=open("binarytesting.dat","rb")
+            try:
+                while True:
+                    rec=pickle.load(check)
+                    if rec[0]>highest_id:
+                        highest_id=rec[0]
+            except EOFError:
+                pass
+            check.close()
+            new_transaction_id=highest_id+1
+            date=record[-1][1]#Puts the date of the last transaction in the records
+            # Add tax as a separate expense transaction
+            myfile=open("binarytesting.dat","ab")
+            tax_record=[new_transaction_id,date,"Expense",tax, "Tax" ]
+            pickle.dump(tax_record,myfile)
+            myfile.close()
+            print("----------TAX HAS BEEN PAID----------")
+            print("Tax Amount:","₹",tax)
+            print("Transaction ID:",new_transaction_id)
+            print("-------------------------------------")
 while True:
     print("===== PERSONAL FINANCE MANAGER =====")
     print("1 --> Write Transaction in file")
