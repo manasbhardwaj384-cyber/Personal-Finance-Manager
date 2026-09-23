@@ -716,7 +716,7 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
     balance=income_balance-expense_balance
     if balance>0:
         print("Congrats you're doing well!!!")
-        print("Your Current Balance is:","₹",balance)
+        print("Your Current Balance is: ","₹ ",balance)
     elif balance==0:
         print("Congrats!!! you're...broke😂🫵","₹",balance)
     else:
@@ -743,12 +743,12 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
     if income_balance<=1200000:
         tax=0
     print("-------------------------------------")
-    print("Your Total Income is:","₹",income_balance)
+    print("Your Total Income is: ","₹ ",income_balance)
     print("-------------------------------------")
-    print("Your Calculated Tax is:","₹",tax)
+    print("Your Calculated Tax is: ","₹ ",tax)
     print("-------------------------------------")
     final_balance=balance-tax #Your tax affects your balance
-    print("Your Balance after Tax is:","₹",final_balance)
+    print("Your Balance after Tax is: ","₹ ",final_balance)
     print("--------------------------------------")
     choice=input("Do you want to pay tax: ")
     if choice.title()=="Yes":
@@ -789,8 +789,8 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
             pickle.dump(tax_record,myfile)
             myfile.close()
             print("----------TAX HAS BEEN PAID----------")
-            print("Tax Amount:","₹",tax)
-            print("Transaction ID:",new_transaction_id)
+            print("Tax Amount: ","₹",tax)
+            print("Transaction ID: ",new_transaction_id)
             print("-------------------------------------")
 while True:
     print("===== PERSONAL FINANCE MANAGER =====")
