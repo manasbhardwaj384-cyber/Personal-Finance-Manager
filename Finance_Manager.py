@@ -29,7 +29,7 @@ def write_record():#Writes Fresh data and erases all previous data
         if days>date_dict[month]or days<1:
             print("Wrong Date!!!")
             continue
-        if year<2026 and year>2027:
+        if year<2026 or year>2027:
             print("Invalid Year!!!")
             continue
         Date = f"{days:02d}-{month:02d}-{year}"
@@ -137,7 +137,7 @@ def add_record():#Add new data to already existing data
         if days>date_dict[month]or days<1:
             print("Wrong Date")
             continue
-        if year<2026 and year>2027:
+        if year<2026 or year>2027:
             print("Invalid Year!!!")
             continue
         Date = f"{days:02d}-{month:02d}-{year}"
@@ -254,7 +254,7 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    if year<2026 and year>2027:
+                    if year<2026 or year>2027:
                         print("Invalid Year!!!")
                         pickle.dump(rec,temp)
                         continue
@@ -310,7 +310,7 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    if year<2026 and year>2027:
+                    if year<2026 or year>2027:
                         print("Invalid Year!!!")
                         pickle.dump(rec,temp)
                         continue
@@ -350,7 +350,7 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    if year<2026 and year>2027:
+                    if year<2026 or year>2027:
                         print("Invalid Year!!!")
                         pickle.dump(rec,temp)
                         continue
@@ -387,7 +387,7 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    if year<2026 and year>2027:
+                    if year<2026 or year>2027:
                         print("Invalid Year!!!")
                         pickle.dump(rec,temp)
                         continue
@@ -462,7 +462,7 @@ def modify_record():
                         print("Wrong Date")
                         pickle.dump(rec,temp)
                         continue
-                    if year<2026 and year>2027:
+                    if year<2026 or year>2027:
                         print("Invalid Year!!!")
                         pickle.dump(rec,temp)
                         continue
@@ -801,6 +801,9 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
                 pass
             check.close()
             new_transaction_id=highest_id+1
+            if not record:
+                print("No records found.")
+                return
             date=record[-1][1]#Puts the date of the last transaction in the records
             # Add tax as a separate expense transaction
             file_handler=open("binarytesting.dat","ab")
