@@ -56,7 +56,7 @@ def write_record():#Writes Fresh data and erases all previous data
             pass
     file_handler.close()
     print("------DATA HAS BEEN SUCCESSFULLY WRITTEN------")
-def read_record():
+def read_record():#Reads the data present in the file
     file_handler=open("binarytesting.dat","rb")
     flag=False
     record=[]
@@ -68,21 +68,24 @@ def read_record():
     except EOFError:
         pass
     file_handler.close()
-    if record!=[]:
+    if record!=[]:#Different ways to read data
         print("---How do you want to read data---")
-        print("1-->Arranged via ID")
-        print("2-->Arranged via Date")
-        print("3-->Arranged via Amount")
-        print("4-->Arranged via Category")
+        print("1-->Original Configuration")# Shows how user entered ther data without sorting
+        print("2-->Arranged via ID")
+        print("3-->Arranged via Date")
+        print("4-->Arranged via Amount")
+        print("5-->Arranged via Category")
         ch=int(input("Enter your choice: "))
         found=True
         if ch==1:
+            pass
+        elif ch==2: # Utilises lambda sorting 
             record.sort(key=lambda x:x[0])
-        elif ch==2:
-            record.sort(key=lambda x:(int(x[1][6:10]),int(x[1][3:5]),int(x[1][0:2])))
         elif ch==3:
-            record.sort(key=lambda x:x[3])
+            record.sort(key=lambda x:(int(x[1][6:10]),int(x[1][3:5]),int(x[1][0:2])))
         elif ch==4:
+            record.sort(key=lambda x:x[3])
+        elif ch==5:
             record.sort(key=lambda x:x[4])
         else:
             print("Invalid Arrangement commanded !!!")
