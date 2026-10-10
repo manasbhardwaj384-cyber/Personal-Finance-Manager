@@ -1,6 +1,6 @@
 import pickle
 def write_record():#Writes Fresh data and erases all previous data
-    myfile=open("binarytesting.dat","wb")
+    file_handler=open("binarytesting.dat","wb")
     flag="y"
     while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
         transaction_id=int(input("Enter the Transaction ID: "))
@@ -50,32 +50,50 @@ def write_record():#Writes Fresh data and erases all previous data
         #-----------
         category=input("Enter the category of Income or expense: ")
         rec=[transaction_id,Date,transaction_type,amount,category]
-        pickle.dump(rec,myfile)
+        pickle.dump(rec,file_handler)
         flag=input("Enter y to continue writing data: ")
         if flag=="y":
             pass
-    myfile.close()
+    file_handler.close()
     print("------DATA HAS BEEN SUCCESSFULLY WRITTEN------")
 def read_record():
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     flag=False
     record=[]
     try:
         while True:
-            a=pickle.load(myfile)
-            record.append(a)
+            rec=pickle.load(file_handler)
+            record.append(rec)
             flag=True
     except EOFError:
         pass
-    myfile.close()
-    record.sort(key=lambda x:x[0])
-    if flag:
-        for i in record:
-            print(i)
+    file_handler.close()
+    if record!=[]:
+        print("---How do you want to read data---")
+        print("1-->Arranged via ID")
+        print("2-->Arranged via Date")
+        print("3-->Arranged via Amount")
+        print("4-->Arranged via Category")
+        ch=int(input("Enter your choice: "))
+        found=True
+        if ch==1:
+            record.sort(key=lambda x:x[0])
+        elif ch==2:
+            record.sort(key=lambda x:x[1])
+        elif ch==3:
+            record.sort(key=lambda x:x[3])
+        elif ch==4:
+            record.sort(key=lambda x:x[4])
+        else:
+            print("Invalid Arrangement commanded !!!")
+            found=False
+        if found:
+            for i in record:
+                print(i)
     else:
         print("NO RECORD FOUND!!!")
 def add_record():#Add new data to already existing data
-    myfile=open("binarytesting.dat","ab")
+    file_handler=open("binarytesting.dat","ab")
     flag="y"
     while flag=="y": #Let's you enter data till flag is y(asks the user to input flag later on)
         check=open("binarytesting.dat","rb")
@@ -140,55 +158,55 @@ def add_record():#Add new data to already existing data
         #-----------
         category=input("Enter the category of Income or expense: ") #Category could be anything-Food,education,Salary,Stocks,etc
         rec=[transaction_id,Date,transaction_type,amount,category]
-        pickle.dump(rec,myfile)
+        pickle.dump(rec,file_handler)
         flag=input("Enter y to continue writing data: ")
         if flag=="y":
             pass
-    myfile.close()
+    file_handler.close()
     print("------DATA HAS BEEN SUCCESSFULLY ADDED------")
 def clear_record():  #If there are too many records just use this
-    myfile=open("binarytesting.dat","wb")
-    myfile.close()
+    file_handler=open("binarytesting.dat","wb")
+    file_handler.close()
     print("------YOUR FILE IS NOW EMPTY------")
 def delete_record():
-    stud=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     temp=open("temp.dat","wb")
     transaction_id=int(input("Enter Transaction ID of the record you want to delete: ")) #Checks transaction ID to delete  record
     Flag=False
     try:
         while True:
-            rec=pickle.load(stud)
+            rec=pickle.load(file_handler)
             if transaction_id!=rec[0]:
                 pickle.dump(rec,temp)
             else:
                 Flag=True
     except EOFError:
         pass
-    stud.close()
+    file_handler.close()
     temp.close()
     #-------------------------------
-    stud=open("binarytesting.dat","wb")
+    file_handler=open("binarytesting.dat","wb")
     temp=open("temp.dat","rb")
     try:
         while True:
             rec=pickle.load(temp)
-            pickle.dump(rec,stud)
+            pickle.dump(rec,file_handler)
     except EOFError:
         pass
-    stud.close()
+    file_handler.close()
     temp.close()
     if Flag:
         print("------DATA HAS BEEN SUCCESSFULLY DELETED------")
     else:
         print("------TRANSACTION ID NOT FOUND------")
 def modify_record():
-    stud=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     temp=open("temp.dat","wb")
     transaction_id=int(input("Enter Transaction ID to be modified: "))
     Flag=False
     try:
         while True:
-            rec=pickle.load(stud)
+            rec=pickle.load(file_handler)
             if transaction_id!=rec[0]:
                 pickle.dump(rec,temp)
             else:
@@ -494,29 +512,30 @@ def modify_record():
                     pickle.dump(rec,temp)
     except EOFError:
         pass
-    stud.close()
+    file_handler.close()
     temp.close()
-    Stud=open("binarytesting.dat","wb")
+    #----------------------------------------
+    file_handler=open("binarytesting.dat","wb")
     Temp=open("temp.dat","rb")
     try:
         while True:
             rec=pickle.load(Temp)
-            pickle.dump(rec,Stud)
+            pickle.dump(rec,file_handler)
     except EOFError:
         pass
-    Stud.close()
+    file_handler.close()
     Temp.close()
     if Flag:
         print("------DATA HAS BEEN SUCCESSFULLY MODIFIED------")
     else:
         print("------TRANSACTION ID NOT FOUND------")
 def Search_Record(): # Searches via Transaction ID
-    stud=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     transaction_id=int(input("Enter Transaction ID which you want to search: "))
     flag=False
     try:
         while True:
-            rec=pickle.load(stud)
+            rec=pickle.load(file_handler)
             if transaction_id==rec[0]:
                 print(rec)
                 flag=True
@@ -525,21 +544,21 @@ def Search_Record(): # Searches via Transaction ID
         pass
     if not flag:
         print("------RECORD NOT FOUND------")
-    stud.close()
+    file_handler.close()
 def Current_Balance(): # Calculates the amount of money you currently have
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     income_balance=0
     expense_balance=0
     try:
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if rec[2]=="Income"or rec[2]=="income":
                 income_balance+=rec[3]
             elif rec[2]=="Expense"or rec[2]=="expense":
                 expense_balance+=rec[3]
     except EOFError:
         pass
-    myfile.close()
+    file_handler.close()
     balance=income_balance-expense_balance
     print("You earned:", income_balance)
     print("--------------------------")
@@ -556,11 +575,11 @@ def Current_Balance(): # Calculates the amount of money you currently have
         print("Too bad you're broke AND in debt of:","₹",abs(balance))#Just in case if your expense>income
         print("--------------------------")
 def Income_Analysis():#Calculates how much you earned
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     Income_analysis={}
     try :
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if rec[2]=="Income":
                 if rec[4] in Income_analysis:
                     Income_analysis[rec[4]]+=rec[3]
@@ -568,28 +587,28 @@ def Income_Analysis():#Calculates how much you earned
                     Income_analysis[rec[4]]=rec[3]
     except EOFError:
         pass
-    myfile.close()
+    file_handler.close()
     for i in Income_analysis:
         print(i,":","₹",Income_analysis[i])
         print("------------")
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     income_balance=0
     try:
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if rec[2]=="Income":
                 income_balance+=rec[3]
     except EOFError:
         pass
     print("Your Total Income comes out to be:","₹", income_balance)
     print("--------------------------------------------")
-    myfile.close()
+    file_handler.close()
 def Expense_Analysis():#Calculates how much you spent
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     expense_analysis={}
     try :
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if rec[2]=="Expense":
                 if rec[4] in expense_analysis:
                     expense_analysis[rec[4]]+=rec[3]
@@ -597,24 +616,24 @@ def Expense_Analysis():#Calculates how much you spent
                     expense_analysis[rec[4]]=rec[3]
     except EOFError:
         pass
-    myfile.close()
+    file_handler.close()
     for i in expense_analysis:
         print(i,":","₹",expense_analysis[i])
         print("------------")
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     expense_balance=0
     try:
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if rec[2]=="Expense":
                 expense_balance+=rec[3]
     except EOFError:
         pass
     print("Your Total Expense comes out to be:","₹", expense_balance)
     print("--------------------------------------------")
-    myfile.close()
+    file_handler.close()
 def Monthly_Report():#Lets you see all the transactions made in a specific month
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     flag=False
     month=int(input("Enter the Month: "))
     if month<1 or month>12:
@@ -622,29 +641,29 @@ def Monthly_Report():#Lets you see all the transactions made in a specific month
         return
     try:
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if int(rec[1][3:5])==month:
                 print("The Monthly report is:",rec)
                 flag=True
     except EOFError:
         if not flag:
             print("Report Not Found!!!")
-    myfile.close()
+    file_handler.close()
 def Saving_Goal_Tracker():# Asks for your financial goals and tell you how far you are from it
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     savings_goal=int(input("Enter your Saving Goals: "))
     income_balance=0
     expense_balance=0
     try:
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if rec[2]=="Income"or rec[2]=="income":
                 income_balance+=rec[3]
             elif rec[2]=="Expense"or rec[2]=="expense":
                 expense_balance+=rec[3]
     except EOFError:
         pass
-    myfile.close()
+    file_handler.close()
     balance=income_balance-expense_balance
     remaining=savings_goal-balance
     if remaining<0:
@@ -660,50 +679,50 @@ def Saving_Goal_Tracker():# Asks for your financial goals and tell you how far y
         print("Remaining:","₹",remaining)
         print("-----------------------------")
 def Highest_Income(): #Displays your highest Income
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     highest=0
     highest_category=None
     try:
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if rec[2]=="Income"or rec[2]=="income":
                 if rec[3]>highest:
                     highest=rec[3]
                     highest_category=rec[4]
     except EOFError:
         pass
-    myfile.close()
+    file_handler.close()
     if highest_category==None:
         print("No record found")
     else:
         print("Your Highest Income is",highest_category,":","₹",highest)
 def Highest_Expense(): #Displays your highest expense
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     highest=0
     highest_category=None
     try:
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             if rec[2]=="Expense"or rec[2]=="expense":
                 if rec[3]>highest:
                     highest=rec[3]
                     highest_category=rec[4]
     except EOFError:
         pass
-    myfile.close()
+    file_handler.close()
     if highest_category==None:
         print("No record found")
     else:
         print("Your Highest expense is",highest_category,":","₹",highest)
 def Tax_Calculator(): # Calculates how much tax you have to pay according to your income
-    myfile=open("binarytesting.dat","rb")
+    file_handler=open("binarytesting.dat","rb")
     income_balance=0 
     expense_balance=0
     c=0
     record=[]
     try:
         while True:
-            rec=pickle.load(myfile)
+            rec=pickle.load(file_handler)
             record.append(rec)
             if rec[2]=="Income"or rec[2]=="income":
                 income_balance+=rec[3]
@@ -712,7 +731,7 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
                 expense_balance+=rec[3]
     except EOFError:
         pass
-    myfile.close()
+    file_handler.close()
     balance=income_balance-expense_balance
     if balance>0:
         print("Congrats you're doing well!!!")
@@ -784,10 +803,10 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
             new_transaction_id=highest_id+1
             date=record[-1][1]#Puts the date of the last transaction in the records
             # Add tax as a separate expense transaction
-            myfile=open("binarytesting.dat","ab")
+            file_handler=open("binarytesting.dat","ab")
             tax_record=[new_transaction_id,date,"Expense",tax, "Tax" ]
-            pickle.dump(tax_record,myfile)
-            myfile.close()
+            pickle.dump(tax_record,file_handler)
+            file_handler.close()
             print("----------TAX HAS BEEN PAID----------")
             print("Tax Amount: ","₹",tax)
             print("Transaction ID: ",new_transaction_id)
