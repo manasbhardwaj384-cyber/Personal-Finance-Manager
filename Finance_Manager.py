@@ -79,7 +79,7 @@ def read_record():
         if ch==1:
             record.sort(key=lambda x:x[0])
         elif ch==2:
-            record.sort(key=lambda x:x[1])
+            record.sort(key=lambda x:(int(x[1][6:10]),int(x[1][3:5]),int(x[1][0:2])))
         elif ch==3:
             record.sort(key=lambda x:x[3])
         elif ch==4:
@@ -732,6 +732,9 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
     except EOFError:
         pass
     file_handler.close()
+    if not record:
+        print("No records found.")
+        return
     balance=income_balance-expense_balance
     if balance>0:
         print("Congrats you're doing well!!!")
@@ -801,9 +804,6 @@ def Tax_Calculator(): # Calculates how much tax you have to pay according to you
                 pass
             check.close()
             new_transaction_id=highest_id+1
-            if not record:
-                print("No records found.")
-                return
             date=record[-1][1]#Puts the date of the last transaction in the records
             # Add tax as a separate expense transaction
             file_handler=open("binarytesting.dat","ab")
